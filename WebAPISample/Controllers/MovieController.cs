@@ -43,6 +43,8 @@ namespace WebAPISample.Controllers
         public void Put(int id, [FromBody]string value)
         {
             // Update movie in db logic
+            var foundMovie = db.Movies.SingleOrDefault(m => m.MovieId == id);
+            foundMovie.Title = value;
         }
 
         // DELETE api/values/5
