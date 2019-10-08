@@ -28,6 +28,8 @@ namespace WebAPISample.Controllers
         public void Post([FromBody]Movie value)
         {
             // Create movie in db logic
+            db.Movies.Add(value);
+            db.SaveChanges();
         }
 
         // PUT api/values/5
