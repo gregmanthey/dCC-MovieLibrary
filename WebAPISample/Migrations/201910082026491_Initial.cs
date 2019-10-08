@@ -13,7 +13,7 @@ namespace WebAPISample.Migrations
                     {
                         MovieId = c.Int(nullable: false, identity: true),
                         Title = c.String(),
-                        DirectorName = c.String(),
+                        Director = c.String(),
                         Genre = c.String(),
                     })
                 .PrimaryKey(t => t.MovieId);
