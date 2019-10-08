@@ -16,19 +16,19 @@ namespace WebAPISample.Controllers
             db = new ApplicationDbContext();
         }
         // GET api/values
-        public IHttpActionResult Get()
+        public IEnumerable<string> Get()
         {
             // Retrieve all movies from db logic
-            var movies = db.Movies.ToList();
-            return Ok(movies);
+            var movies = db.Movies.Select(m => m.Title).ToList();
+            return movies;
         }
 
         // GET api/values/5
-        public IHttpActionResult Get(int id)
+        public string Get(int id)
         {
             // Retrieve movie by id from db logic
             var movies = db.Movies.Find(id);
-            return Ok(movies);
+            return movies.Title;
         }
 
         // POST api/values
