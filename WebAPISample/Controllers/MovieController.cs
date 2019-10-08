@@ -8,6 +8,7 @@ using WebAPISample.Models;
 
 namespace WebAPISample.Controllers
 {
+    //[Route("api/Movies")]
     public class MovieController : ApiController
     {
         ApplicationDbContext db;
@@ -16,19 +17,21 @@ namespace WebAPISample.Controllers
             db = new ApplicationDbContext();
         }
         // GET api/values
-        public IEnumerable<string> Get()
+        //[HttpGet]
+        //[Route("GetMovies")]
+        public IEnumerable<Movie> Get()
         {
             // Retrieve all movies from db logic
-            var movies = db.Movies.Select(m => m.Title).ToList();
+            var movies = db.Movies.ToList();
             return movies;
         }
 
         // GET api/values/5
-        public string Get(int id)
+        public Movie Get(int id)
         {
             // Retrieve movie by id from db logic
-            var movies = db.Movies.Find(id);
-            return movies.Title;
+            var movie = db.Movies.Find(id);
+            return movie;
         }
 
         // POST api/values
