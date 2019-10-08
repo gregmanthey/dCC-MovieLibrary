@@ -10,18 +10,25 @@ namespace WebAPISample.Controllers
 {
     public class MovieController : ApiController
     {
+        ApplicationDbContext db;
+        public MovieController()
+        {
+            db = new ApplicationDbContext();
+        }
         // GET api/values
-        public IEnumerable<string> Get()
+        public IHttpActionResult Get()
         {
             // Retrieve all movies from db logic
-            return new string[] { "movie1 string", "movie2 string" };
+            var movies = db.Movies.ToList();
+            return Ok(movies);
         }
 
         // GET api/values/5
-        public string Get(int id)
+        public IHttpActionResult Get(int id)
         {
             // Retrieve movie by id from db logic
-            return "value";
+            var movies = db.Movies.Find(id);
+            return Ok(movies);
         }
 
         // POST api/values
@@ -40,6 +47,9 @@ namespace WebAPISample.Controllers
         public void Delete(int id)
         {
             // Delete movie from db logic
+            var deleteMovie = db.Movies.Find(id);
+            db.Movies.Remove(deleteMovie);
+            db.SaveChanges();
         }
     }
 
