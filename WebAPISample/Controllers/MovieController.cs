@@ -68,14 +68,27 @@ namespace WebAPISample.Controllers
         }
 
         // PUT api/values/5
-        public void Put(int id, [FromBody]Movie value)
+        public IHttpActionResult Put(int id, [FromBody]Movie value)
         {
             // Update movie in db logic
             var foundMovie = db.Movies.SingleOrDefault(m => m.MovieId == id);
-            foundMovie.Title = value.Title;
-            foundMovie.Director = value.Director;
-            foundMovie.Genre = value.Genre;
-            db.SaveChanges();
+            if (foundMovie is null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                foundMovie.Title = value.Title;
+                foundMovie.Director = value.Director;
+                foundMovie.Genre = value.Genre;
+                db.SaveChanges();
+                return Ok(foundMovie);
+            }
+            catch (Exception)
+            {
+                return Content(HttpStatusCode.InternalServerError, foundMovie);
+            }
         }
 
         // DELETE api/values/5
