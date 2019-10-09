@@ -37,34 +37,33 @@ namespace WebAPISample.Controllers
 
                 return NotFound();
             }
-            
+
         }
 
         // POST api/values
         public IHttpActionResult Post([FromBody]Movie value)
         {
             // Create movie in db logic
-            try
+            var movieInDb = db.Movies.SingleOrDefault(m => m.Title == value.Title && m.Director == value.Director);
+            if (movieInDb is null)
             {
-                var movieInDb = db.Movies.SingleOrDefault(m => m.Title == value.Title && m.Director == value.Director);
-                if (movieInDb is null)
+                try
                 {
                     db.Movies.Add(value);
                     db.SaveChanges();
-                    var newMovie = db.Movies.SingleOrDefault(m => m.Title == value.Title && m.Director == value.Director);
+                    var newMovie = db.Movies.SingleOrDefault(m => m.Title == value.Title && m.Director == value.Director && m.Genre == value.Genre);
                     return Content(HttpStatusCode.Created, newMovie);
                 }
-                else
+                catch (Exception)
                 {
-                    return Content(HttpStatusCode.Found, Get(movieInDb.MovieId));
+                    return InternalServerError(new Exception("Error, unable to create new row in database from supplied data"));
                 }
-            }
-            catch (Exception)
-            {
 
-                return InternalServerError(new Exception("Error, unable to create new row in database from supplied data"));
             }
-            
+            else
+            {
+                return Content(HttpStatusCode.Found, Get(movieInDb.MovieId));
+            }
         }
 
         // PUT api/values/5
