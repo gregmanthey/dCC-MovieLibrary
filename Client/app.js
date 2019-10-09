@@ -23,5 +23,26 @@
         e.preventDefault();
     }
 
+    function GetAllData(){
+        $.ajax({
+            url: 'https://localhost:44352/api/movie',
+            dataType: 'json',
+            type: 'get',
+            data: "id=1",
+            contentType: 'application/json',
+            success: function(data, textStatus, jQxhr){
+                console.log("Success");
+                //results = JSON.parse(data);
+                $.each(data, function(i){
+                    $('#response').append("<p>" + data[i] + "</p>");
+                });
+            },
+            error: function( jqXhr, textStatus, errorThrown ){
+                console.log( errorThrown );
+            }
+        });
+    }
+
     $('#my-form').submit( processForm );
+    $('#getall').on('click', GetAllData);
 })(jQuery);
