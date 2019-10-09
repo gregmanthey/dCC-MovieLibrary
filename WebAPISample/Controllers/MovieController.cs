@@ -16,11 +16,11 @@ namespace WebAPISample.Controllers
             db = new ApplicationDbContext();
         }
         // GET api/values
-        public IEnumerable<Movie> Get()
+        public IHttpActionResult Get()
         {
             // Retrieve all movies from db logic
             var movies = db.Movies.ToList();
-            return movies;
+            return Ok(movies);
         }
 
         // GET api/values/5
