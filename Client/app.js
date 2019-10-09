@@ -30,16 +30,28 @@
             type: 'get',
             contentType: 'application/json',
             success: function(data, textStatus, jQxhr){
+                $('#my-form').after(textStatus);
+                $('#response').append("<table id=\"movieTable\" class=\"table table-striped table-bordered table-hover table-condensed\"></table>");
+                $('#movieTable').append("<tr>" + 
+                "<th>Title</th>" + 
+                "<th>Director</th>" + 
+                "<th>Genre</th>" + 
+                "</tr>");
                 $.each(data, function(i){
-                    $('#response').append("<p>" + data[i] + "</p>");
+                    $('#movieTable').append("<tr>" + 
+                    "<td>" + data[i].Title + "</td>" + 
+                    "<td>" + data[i].Director + "</td>" + 
+                    "<td>" + data[i].Genre + "</td>" + 
+                    "</tr>");
                 });
                 
             },
             error: function( jqXhr, textStatus, errorThrown ){
+                $('#my-form').after(textStatus);
                 console.log( errorThrown );
             }
         });
-        $('#my-form').after(textStatus);
+        
     }
 
     function GetSingleMovie(){
