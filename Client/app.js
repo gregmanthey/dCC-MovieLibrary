@@ -23,7 +23,26 @@
         e.preventDefault();
     }
 
-    function GetAllData(){
+    function GetAllMovies(){
+        $.ajax({
+            url: 'https://localhost:44352/api/movie',
+            dataType: 'json',
+            type: 'get',
+            contentType: 'application/json',
+            success: function(data, textStatus, jQxhr){
+                $.each(data, function(i){
+                    $('#response').append("<p>" + data[i] + "</p>");
+                });
+                
+            },
+            error: function( jqXhr, textStatus, errorThrown ){
+                console.log( errorThrown );
+            }
+        });
+        $('#my-form').after(textStatus);
+    }
+
+    function GetSingleMovie(){
         $.ajax({
             url: 'https://localhost:44352/api/movie',
             dataType: 'json',
@@ -31,8 +50,6 @@
             data: "id=1",
             contentType: 'application/json',
             success: function(data, textStatus, jQxhr){
-                console.log("Success");
-                //results = JSON.parse(data);
                 $.each(data, function(i){
                     $('#response').append("<p>" + data[i] + "</p>");
                 });
@@ -41,8 +58,9 @@
                 console.log( errorThrown );
             }
         });
+        $('#my-form').after(textStatus);
     }
 
     $('#my-form').submit( processForm );
-    $('#getall').on('click', GetAllData);
+    $('#getall').on('click', GetAllMovies);
 })(jQuery);
