@@ -25,6 +25,7 @@
         e.preventDefault();
         $('#my-form button').html("Add Movie");
         $('#formMovieId').val(null);
+        $('#my-form')[0].reset();
     }
 
     function GetAllMovies(){
