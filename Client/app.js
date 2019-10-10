@@ -1,7 +1,7 @@
-(function($){
+(function ($) {
     function processForm( e ){
         var dict = {
-        	Title : this["title"].value,
+            Title: this["title"].value,
             Director: this["director"].value,
             Genre: this["genre"].value
         };
@@ -12,11 +12,12 @@
             type: 'post',
             contentType: 'application/json',
             data: JSON.stringify(dict),
-            success: function( data, textStatus, jQxhr ){
-                $('#response pre').html( data );
+            success: function (data, textStatus, jQxhr) {
+                GetAllMovies();
+                appendMovie(data);
             },
-            error: function( jqXhr, textStatus, errorThrown ){
-                console.log( errorThrown );
+            error: function (jqXhr, textStatus, errorThrown) {
+                console.log(errorThrown);
             }
         });
 
@@ -29,48 +30,26 @@
             dataType: 'json',
             type: 'get',
             contentType: 'application/json',
-            success: function(data, textStatus, jQxhr){
-                $('#my-form').after(textStatus);
-                $('#response').append("<table id=\"movieTable\" class=\"table table-striped table-bordered table-hover table-condensed\"></table>");
-                $('#movieTable').append("<tr>" + 
-                "<th>Title</th>" + 
-                "<th>Director</th>" + 
-                "<th>Genre</th>" + 
-                "</tr>");
-                $.each(data, function(i){
-                    $('#movieTable').append("<tr>" + 
-                    "<td>" + data[i].Title + "</td>" + 
-                    "<td>" + data[i].Director + "</td>" + 
-                    "<td>" + data[i].Genre + "</td>" + 
-                    "</tr>");
+            success: function (data, textStatus, jQxhr) {
+                $('#movieTable').html('');
+                $.each(data, function (i) {
+                    appendMovie(data[i]);
                 });
-                
             },
-            error: function( jqXhr, textStatus, errorThrown ){
-                $('#my-form').after(textStatus);
-                console.log( errorThrown );
+            error: function (jqXhr, textStatus, errorThrown) {
+                console.log(errorThrown);
             }
         });
-        
+
     }
 
-    function GetSingleMovie(){
-        $.ajax({
-            url: 'https://localhost:44352/api/movie',
-            dataType: 'json',
-            type: 'get',
-            data: "id=1",
-            contentType: 'application/json',
-            success: function(data, textStatus, jQxhr){
-                $.each(data, function(i){
-                    $('#response').append("<p>" + data[i] + "</p>");
-                });
-            },
-            error: function( jqXhr, textStatus, errorThrown ){
-                console.log( errorThrown );
-            }
-        });
-        $('#my-form').after(textStatus);
+    function appendMovie(data){
+        $('#movieTable').append("<tr>" +
+            "<td>" + data.Title + "</td>" +
+            "<td>" + data.Director + "</td>" +
+            "<td>" + data.Genre + "</td>" +
+            "<td hidden class=\"movieId\">" + data.MovieId + "</td>" +
+            "<td><button class=\"update-button\" type=\"button\">Update Movie</button></tr>");
     }
 
     $('#my-form').submit( processForm );

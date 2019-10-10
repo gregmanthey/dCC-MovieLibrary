@@ -27,17 +27,12 @@ namespace WebAPISample.Controllers
         public IHttpActionResult Get(int id)
         {
             // Retrieve movie by id from db logic
-            try
+            var movie = db.Movies.Find(id);
+            if (movie is null)
             {
-                var movie = db.Movies.Find(id);
-                return Ok(movie);
-            }
-            catch (Exception)
-            {
-
                 return NotFound();
             }
-
+            return Ok(movie);
         }
 
         // POST api/values
