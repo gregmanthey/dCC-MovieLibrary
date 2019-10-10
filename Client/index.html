@@ -14,14 +14,12 @@
 
 
 <form id="my-form">
-    <input type="text" name="title" placeholder="Title" />
-    <input type="text" name="director" placeholder="Director" />
-    <input type="text" name="genre" placeholder="Genre" />
-
+    <input id="formTitle" type="text" name="title" placeholder="Title" />
+    <input id="formDirector" type="text" name="director" placeholder="Director" />
+    <input id="formGenre" type="text" name="genre" placeholder="Genre" />
+    <input id="formMovieId" type="hidden" name="movieId" />
     <button type="submit">Add Movie</button>
 </form>
-
-<button id="getall" type="button">List All Movies</button>
 
 <table class="table table-striped table-bordered table-hover table-condensed">
     <thead>

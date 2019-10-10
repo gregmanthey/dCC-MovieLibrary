@@ -39,14 +39,13 @@ namespace WebAPISample.Controllers
         public IHttpActionResult Post([FromBody]Movie value)
         {
             // Create movie in db logic
-            var movieInDb = db.Movies.SingleOrDefault(m => m.Title == value.Title && m.Director == value.Director);
+            var movieInDb = db.Movies.SingleOrDefault(m => m.MovieId == value.MovieId);
             if (movieInDb is null)
             {
                 try
                 {
-                    db.Movies.Add(value);
+                    var newMovie = db.Movies.Add(value);
                     db.SaveChanges();
-                    var newMovie = db.Movies.SingleOrDefault(m => m.Title == value.Title && m.Director == value.Director && m.Genre == value.Genre);
                     return Content(HttpStatusCode.Created, newMovie);
                 }
                 catch (Exception)
@@ -57,7 +56,7 @@ namespace WebAPISample.Controllers
             }
             else
             {
-                return Content(HttpStatusCode.Found, Get(movieInDb.MovieId));
+                return Ok(Update(movieInDb.MovieId, value));
             }
         }
 
@@ -65,10 +64,21 @@ namespace WebAPISample.Controllers
         public IHttpActionResult Put(int id, [FromBody]Movie value)
         {
             // Update movie in db logic
-            var foundMovie = db.Movies.SingleOrDefault(m => m.MovieId == id);
+            var foundMovie = Update(id, value);
             if (foundMovie is null)
             {
                 return NotFound();
+            }
+            return Ok(foundMovie);
+        }
+
+        private Movie Update(int id, Movie value)
+        {
+            // Update movie in db logic
+            var foundMovie = db.Movies.SingleOrDefault(m => m.MovieId == id);
+            if (foundMovie is null || value is null)
+            {
+                return null;
             }
 
             try
@@ -77,11 +87,11 @@ namespace WebAPISample.Controllers
                 foundMovie.Director = value.Director;
                 foundMovie.Genre = value.Genre;
                 db.SaveChanges();
-                return Ok(foundMovie);
+                return foundMovie;
             }
             catch (Exception)
             {
-                return Content(HttpStatusCode.InternalServerError, foundMovie);
+                throw new Exception("Problem updating row in database");
             }
         }
 

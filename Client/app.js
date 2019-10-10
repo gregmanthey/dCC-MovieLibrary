@@ -1,6 +1,7 @@
 (function ($) {
     function processForm( e ){
         var dict = {
+            MovieId: this["movieId"].value,
             Title: this["title"].value,
             Director: this["director"].value,
             Genre: this["genre"].value
@@ -22,6 +23,8 @@
         });
 
         e.preventDefault();
+        $('#my-form button').html("Add Movie");
+        $('#formMovieId').val(null);
     }
 
     function GetAllMovies(){
@@ -40,18 +43,36 @@
                 console.log(errorThrown);
             }
         });
-
     }
 
     function appendMovie(data){
         $('#movieTable').append("<tr>" +
-            "<td>" + data.Title + "</td>" +
-            "<td>" + data.Director + "</td>" +
-            "<td>" + data.Genre + "</td>" +
+            "<td class=\"title\">" + data.Title + "</td>" +
+            "<td class=\"director\">" + data.Director + "</td>" +
+            "<td class=\"genre\">" + data.Genre + "</td>" +
             "<td hidden class=\"movieId\">" + data.MovieId + "</td>" +
-            "<td><button class=\"update-button\" type=\"button\">Update Movie</button></tr>");
+            "<td><button class=\"updateMovie\" type=\"button\">Update Movie</button></td></tr>");
+            
+            $('.updateMovie').on('click', UpdateMovie);
     }
 
+    function UpdateMovie(){
+        $('#my-form button').html("Update Movie");
+
+        var text = $(this).closest('tr').find('.title').text();
+        $("#formTitle").val(text);
+
+        text = $(this).closest('tr').find('.director').text();
+        $("#formDirector").val(text);
+
+        text = $(this).closest('tr').find('.genre').text();
+        $("#formGenre").val(text);
+
+        text = $(this).closest('tr').find('.movieId').text();
+        $("#formMovieId").val(text);
+    }
+
+    GetAllMovies();
     $('#my-form').submit( processForm );
-    $('#getall').on('click', GetAllMovies);
+    
 })(jQuery);
