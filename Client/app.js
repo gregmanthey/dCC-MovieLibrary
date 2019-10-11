@@ -15,7 +15,6 @@
             data: JSON.stringify(dict),
             success: function (data, textStatus, jQxhr) {
                 GetAllMovies();
-                appendMovie(data);
             },
             error: function (jqXhr, textStatus, errorThrown) {
                 console.log(errorThrown);
@@ -75,5 +74,5 @@
 
     GetAllMovies();
     $('#my-form').submit( processForm );
-    
+
 })(jQuery);
